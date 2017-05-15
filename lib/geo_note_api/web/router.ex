@@ -16,8 +16,8 @@ defmodule GeoNoteApi.Web.Router do
 
     get "/", PageController, :index
 
+    resources "/places", PlaceController 
     resources "/notes", NoteController
-    resources "/places", PlaceController
   end
 
   # Other scopes may use custom stacks.
