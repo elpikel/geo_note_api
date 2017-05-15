@@ -5,7 +5,7 @@ defmodule GeoNoteApi.Repo.Migrations.CreateGeoNoteApi.Notes.Place do
     create table(:notes_places) do
       add :description, :string
       add :longitude, :float
-      add :langitude, :float
+      add :latitude, :float
 
       timestamps()
     end

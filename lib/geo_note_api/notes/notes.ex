@@ -17,7 +17,7 @@ defmodule GeoNoteApi.Notes do
       [%Note{}, ...]
 
   """
-  def list_notes do
+  def list_notes() do
     Repo.all(Note)
   end
 
@@ -115,12 +115,12 @@ defmodule GeoNoteApi.Notes do
 
   ## Examples
 
-      iex> list_places()
+      iex> list_places(latitude, longitude)
       [%Place{}, ...]
 
   """
-  def list_places do
-    Repo.all(Place)
+  def list_places(latitude, longitude) do
+    Repo.all(from place in Place, where: place.latitude <= ^latitude and place.longitude <= ^longitude)
   end
 
   @doc """

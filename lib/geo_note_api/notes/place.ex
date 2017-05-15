@@ -3,8 +3,8 @@ defmodule GeoNoteApi.Notes.Place do
 
   schema "notes_places" do
     field :description, :string
-    field :langitude, :float
     field :longitude, :float
+    field :latitude, :float
 
     timestamps()
   end

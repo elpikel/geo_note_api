@@ -6,8 +6,8 @@ defmodule GeoNoteApi.Web.PlaceController do
 
   action_fallback GeoNoteApi.Web.FallbackController
 
-  def index(conn, _params) do
-    places = Notes.list_places()
+  def index(conn, %{"latitude" => latitude, "longitude" => longitude}) do
+    places = Notes.list_places(latitude, longitude)
     render(conn, "index.json", places: places)
   end
 
