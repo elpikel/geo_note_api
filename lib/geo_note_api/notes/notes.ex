@@ -123,6 +123,10 @@ defmodule GeoNoteApi.Notes do
     Repo.all(from place in Place, where: place.latitude <= ^latitude and place.longitude <= ^longitude)
   end
 
+  def list_places() do
+    Repo.all(Place)
+  end
+
   @doc """
   Gets a single place.
 
@@ -206,7 +210,7 @@ defmodule GeoNoteApi.Notes do
 
   defp place_changeset(%Place{} = place, attrs) do
     place
-    |> cast(attrs, [:description, :longitude, :langitude])
-    |> validate_required([:description, :longitude, :langitude])
+    |> cast(attrs, [:description, :longitude, :latitude])
+    |> validate_required([:description, :longitude, :latitude])
   end
 end

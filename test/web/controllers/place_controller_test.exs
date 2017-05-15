@@ -4,9 +4,9 @@ defmodule GeoNoteApi.Web.PlaceControllerTest do
   alias GeoNoteApi.Notes
   alias GeoNoteApi.Notes.Place
 
-  @create_attrs %{description: "some description", langitude: "120.5", longitude: "120.5"}
-  @update_attrs %{description: "some updated description", langitude: "456.7", longitude: "456.7"}
-  @invalid_attrs %{description: nil, langitude: nil, longitude: nil}
+  @create_attrs %{description: "some description", longitude: "120.5", latitude: "120.5"}
+  @update_attrs %{description: "some updated description", longitude: "456.7", latitude: "456.7"}
+  @invalid_attrs %{description: nil, longitude: nil, latitude: nil}
 
   def fixture(:place) do
     {:ok, place} = Notes.create_place(@create_attrs)
@@ -30,8 +30,8 @@ defmodule GeoNoteApi.Web.PlaceControllerTest do
     assert json_response(conn, 200)["data"] == %{
       "id" => id,
       "description" => "some description",
-      "langitude" => "120.5",
-      "longitude" => "120.5"}
+      "langitude" => 120.5,
+      "latitude" => 120.5}
   end
 
   test "does not create place and renders errors when data is invalid", %{conn: conn} do

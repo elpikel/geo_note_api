@@ -11,6 +11,11 @@ defmodule GeoNoteApi.Web.PlaceController do
     render(conn, "index.json", places: places)
   end
 
+  def index(conn, _params) do
+    places = Notes.list_places()
+    render(conn, "index.json", places: places)
+  end
+
   def create(conn, %{"place" => place_params}) do
     with {:ok, %Place{} = place} <- Notes.create_place(place_params) do
       conn

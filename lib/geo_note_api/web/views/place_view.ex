@@ -14,6 +14,6 @@ defmodule GeoNoteApi.Web.PlaceView do
     %{id: place.id,
       description: place.description,
       longitude: place.longitude,
-      langitude: place.langitude}
+      latitude: place.latitude}
   end
 end
