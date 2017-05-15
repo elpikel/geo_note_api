@@ -104,8 +104,8 @@ defmodule GeoNoteApi.Notes do
 
   defp note_changeset(%Note{} = note, attrs) do
     note
-    |> cast(attrs, [:description, :image_url, :user_name])
-    |> validate_required([:description, :image_url, :user_name])
+    |> cast(attrs, [:description, :user_name])
+    |> validate_required([:description, :user_name])
   end
 
   alias GeoNoteApi.Notes.Place
