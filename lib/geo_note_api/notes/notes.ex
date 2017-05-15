@@ -17,6 +17,10 @@ defmodule GeoNoteApi.Notes do
       [%Note{}, ...]
 
   """
+  def list_notes(place_id) do
+    Repo.all(from n in Note, where: n.place_id == ^place_id)
+  end
+
   def list_notes() do
     Repo.all(Note)
   end
@@ -104,8 +108,8 @@ defmodule GeoNoteApi.Notes do
 
   defp note_changeset(%Note{} = note, attrs) do
     note
-    |> cast(attrs, [:description, :user_name])
-    |> validate_required([:description, :user_name])
+    |> cast(attrs, [:description, :user_name, :image_url, :place_id])
+    |> validate_required([:description, :user_name, :place_id])
   end
 
   alias GeoNoteApi.Notes.Place

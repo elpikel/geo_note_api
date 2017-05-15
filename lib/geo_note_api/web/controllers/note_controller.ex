@@ -6,7 +6,12 @@ defmodule GeoNoteApi.Web.NoteController do
 
   action_fallback GeoNoteApi.Web.FallbackController
 
-  def index(conn, params) do
+  def index(conn, %{"place_id" => place_id}) do
+    notes = Notes.list_notes(place_id)
+    render(conn, "index.json", notes: notes)
+  end
+
+  def index(conn, _params) do
     notes = Notes.list_notes()
     render(conn, "index.json", notes: notes)
   end
