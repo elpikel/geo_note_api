@@ -14,6 +14,7 @@ defmodule GeoNoteApi.Web.NoteView do
     %{id: note.id,
       description: note.description,
       image_url: note.image_url,
-      user_name: note.user_name}
+      user_name: note.user_name,
+      place_id: note.place_id}
   end
 end
