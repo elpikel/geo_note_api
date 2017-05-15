@@ -7,6 +7,7 @@ defmodule GeoNoteApi.Notes do
   alias GeoNoteApi.Repo
 
   alias GeoNoteApi.Notes.Note
+  alias GeoNoteApi.Notes.Place
 
   @doc """
   Returns the list of notes.
@@ -54,6 +55,11 @@ defmodule GeoNoteApi.Notes do
 
   """
   def create_note(attrs \\ %{}) do
+    if !Map.has_key?(attrs, "place_id") do
+      {:ok, %Place{} = place} = create_place(attrs)
+      attrs = Map.put(attrs, "place_id", place.id)
+    end
+
     %Note{}
     |> note_changeset(attrs)
     |> Repo.insert()
@@ -109,10 +115,10 @@ defmodule GeoNoteApi.Notes do
   defp note_changeset(%Note{} = note, attrs) do
     note
     |> cast(attrs, [:description, :user_name, :image_url, :place_id])
-    |> validate_required([:description, :user_name, :place_id])
+    |> validate_required([:description, :user_name])
   end
 
-  alias GeoNoteApi.Notes.Place
+
 
   @doc """
   Returns the list of places.
