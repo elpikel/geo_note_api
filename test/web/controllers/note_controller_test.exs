@@ -4,9 +4,9 @@ defmodule GeoNoteApi.Web.NoteControllerTest do
   alias GeoNoteApi.Notes
   alias GeoNoteApi.Notes.Note
 
-  @create_attrs %{description: "some description", image_url: "some image_url", user_name: "some user_name"}
-  @update_attrs %{description: "some updated description", image_url: "some updated image_url", user_name: "some updated user_name"}
-  @invalid_attrs %{description: nil, image_url: nil, user_name: nil}
+  @create_attrs %{"description" => "some description", "image_url" => "some image_url", "user_name" => "some user_name", "longitude" => "11.22", "latitude" => "22.11"}
+  @update_attrs %{"description" => "some updated description", "image_url" => "some updated image_url", "user_name" => "some updated user_name"}
+  @invalid_attrs %{"description" => nil, "image_url" => nil, "user_name" => nil, "longitude" => nil, "latitude" => nil}
 
   def fixture(:note) do
     {:ok, note} = Notes.create_note(@create_attrs)
@@ -19,19 +19,21 @@ defmodule GeoNoteApi.Web.NoteControllerTest do
 
   test "lists all entries on index", %{conn: conn} do
     conn = get conn, note_path(conn, :index)
-    assert json_response(conn, 200)["data"] == []
+    response = json_response(conn, 200)
+    assert response == []
   end
 
   test "creates note and renders note when data is valid", %{conn: conn} do
     conn = post conn, note_path(conn, :create), note: @create_attrs
-    assert %{"id" => id} = json_response(conn, 201)["data"]
+    assert %{"id" => id, "place_id" => place_id} = json_response(conn, 201)
 
     conn = get conn, note_path(conn, :show, id)
-    assert json_response(conn, 200)["data"] == %{
+    assert json_response(conn, 200) == %{
       "id" => id,
       "description" => "some description",
       "image_url" => "some image_url",
-      "user_name" => "some user_name"}
+      "user_name" => "some user_name",
+      "place_id" => place_id}
   end
 
   test "does not create note and renders errors when data is invalid", %{conn: conn} do
@@ -42,14 +44,15 @@ defmodule GeoNoteApi.Web.NoteControllerTest do
   test "updates chosen note and renders note when data is valid", %{conn: conn} do
     %Note{id: id} = note = fixture(:note)
     conn = put conn, note_path(conn, :update, note), note: @update_attrs
-    assert %{"id" => ^id} = json_response(conn, 200)["data"]
+    assert %{"id" => ^id, "place_id" => place_id} = json_response(conn, 200)
 
     conn = get conn, note_path(conn, :show, id)
-    assert json_response(conn, 200)["data"] == %{
+    assert json_response(conn, 200) == %{
       "id" => id,
       "description" => "some updated description",
       "image_url" => "some updated image_url",
-      "user_name" => "some updated user_name"}
+      "user_name" => "some updated user_name",
+      "place_id" => place_id}
   end
 
   test "does not update chosen note and renders errors when data is invalid", %{conn: conn} do

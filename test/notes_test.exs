@@ -4,9 +4,9 @@ defmodule GeoNoteApi.NotesTest do
   alias GeoNoteApi.Notes
   alias GeoNoteApi.Notes.Note
 
-  @create_attrs %{description: "some description", image_url: "some image_url", user_name: "some user_name"}
-  @update_attrs %{description: "some updated description", image_url: "some updated image_url", user_name: "some updated user_name"}
-  @invalid_attrs %{description: nil, image_url: nil, user_name: nil}
+  @create_attrs %{"description" => "some description", "image_url" => "some image_url", "user_name" => "some user_name", "longitude" => "11.22", "latitude" => "22.11"}
+  @update_attrs %{"description" => "some updated description", "image_url" => "some updated image_url", "user_name" => "some updated user_name"}
+  @invalid_attrs %{"description" => nil, "image_url" => nil, "user_name" => nil, "longitude" => nil, "latitude" => nil}
 
   def fixture(:note, attrs \\ @create_attrs) do
     {:ok, note} = Notes.create_note(attrs)

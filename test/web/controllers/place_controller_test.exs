@@ -4,7 +4,7 @@ defmodule GeoNoteApi.Web.PlaceControllerTest do
   alias GeoNoteApi.Notes
   alias GeoNoteApi.Notes.Place
 
-  @create_attrs %{description: "some description", longitude: "120.5", latitude: "120.5"}
+  @create_attrs %{description: "some description", longitude: "120", latitude: "125"}
   @update_attrs %{description: "some updated description", longitude: "456.7", latitude: "456.7"}
   @invalid_attrs %{description: nil, longitude: nil, latitude: nil}
 
@@ -19,19 +19,19 @@ defmodule GeoNoteApi.Web.PlaceControllerTest do
 
   test "lists all entries on index", %{conn: conn} do
     conn = get conn, place_path(conn, :index)
-    assert json_response(conn, 200)["data"] == []
+    assert json_response(conn, 200) == []
   end
 
   test "creates place and renders place when data is valid", %{conn: conn} do
     conn = post conn, place_path(conn, :create), place: @create_attrs
-    assert %{"id" => id} = json_response(conn, 201)["data"]
+    assert %{"id" => id} = json_response(conn, 201)
 
     conn = get conn, place_path(conn, :show, id)
-    assert json_response(conn, 200)["data"] == %{
+    assert json_response(conn, 200) == %{
       "id" => id,
       "description" => "some description",
-      "langitude" => 120.5,
-      "latitude" => 120.5}
+      "longitude" => 120.0,
+      "latitude" => 125.0}
   end
 
   test "does not create place and renders errors when data is invalid", %{conn: conn} do
@@ -42,14 +42,14 @@ defmodule GeoNoteApi.Web.PlaceControllerTest do
   test "updates chosen place and renders place when data is valid", %{conn: conn} do
     %Place{id: id} = place = fixture(:place)
     conn = put conn, place_path(conn, :update, place), place: @update_attrs
-    assert %{"id" => ^id} = json_response(conn, 200)["data"]
+    assert %{"id" => ^id} = json_response(conn, 200)
 
     conn = get conn, place_path(conn, :show, id)
-    assert json_response(conn, 200)["data"] == %{
+    assert json_response(conn, 200) == %{
       "id" => id,
       "description" => "some updated description",
-      "langitude" => "456.7",
-      "longitude" => "456.7"}
+      "longitude" => 456.7,
+      "latitude" => 456.7}
   end
 
   test "does not update chosen place and renders errors when data is invalid", %{conn: conn} do
