@@ -26,7 +26,7 @@ defmodule GeoNoteApi.Notes do
   end
 
   defp create_place_for_note(%{"place_id" => _place_id} = attrs) do
-    attrs
+    {:ok, attrs}
   end
   defp create_place_for_note(attrs) do
     case create_place(attrs) do

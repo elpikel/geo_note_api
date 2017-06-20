@@ -4,7 +4,8 @@ defmodule GeoNoteApi.Web.NoteControllerTest do
   alias GeoNoteApi.Notes
   alias GeoNoteApi.Notes.Note
 
-  @create_attrs %{"description" => "some description", "image_url" => "some image_url", "user_name" => "some user_name", "longitude" => "11.22", "latitude" => "22.11"}
+  @create_attrs %{"description" => "some description", "image_url" => "some image_url", "user_name" => "some user_name", "longitude" => 11.22, "latitude" => 22.11}
+  @create_with_place_attrs %{"place_id" => 1, "description" => "some description", "image_url" => "some image_url", "user_name" => "some user_name", "longitude" => 11.22, "latitude" => 22.11}
   @update_attrs %{"description" => "some updated description", "image_url" => "some updated image_url", "user_name" => "some updated user_name"}
   @invalid_attrs %{"description" => nil, "image_url" => nil, "user_name" => nil, "longitude" => nil, "latitude" => nil}
 
@@ -31,6 +32,25 @@ defmodule GeoNoteApi.Web.NoteControllerTest do
     assert json_response(conn, 200) == %{
       "id" => id,
       "description" => "some description",
+      "image_url" => "some image_url",
+      "user_name" => "some user_name",
+      "place_id" => place_id}
+  end
+
+  test "creates note with place and renders note when data is valid", %{conn: conn} do
+    conn = post conn, note_path(conn, :create), note: @create_attrs
+    assert %{"place_id" => place_id} = json_response(conn, 201)
+
+    note = Map.put(@create_with_place_attrs, "description", "new description")
+    note = Map.put(note, "place_id", place_id)
+
+    conn = post conn, note_path(conn, :create), note: note
+    assert %{"id" => id, "place_id" => place_id} = json_response(conn, 201)
+
+    conn = get conn, note_path(conn, :show, id)
+    assert json_response(conn, 200) == %{
+      "id" => id,
+      "description" => "new description",
       "image_url" => "some image_url",
       "user_name" => "some user_name",
       "place_id" => place_id}
